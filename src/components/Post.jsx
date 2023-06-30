@@ -31,9 +31,9 @@ function Post() {
   console.log(post);
 
   return (
-    <>
+    <div>
       {post.map((item) => (
-        <div>
+        <div sx={{backgroundColor: "#3B3A3C"}}>
           <h1>{item.title}</h1>
           <h4>{item.description}</h4>
           <img src={item.image} alt="" height={300}/> <br />
@@ -41,7 +41,7 @@ function Post() {
           <h3>{item.detail}</h3>
         </div>
       ))}
-    </>
+    </div>
   );
 }
 
