@@ -60,7 +60,7 @@ function Post() {
               <Typography sx={{color: "gold"}}>{rateStar(item.rate)}</Typography>
             </CardContent>
             <CardActions>
-              <Button size="small" sx={{color: "#E38969"}}>More Detail</Button>
+              <Button size="small" sx={{color: "#E38969", ml:1}}>More Detail</Button>
             </CardActions>
           </Card>
         </Grid>
