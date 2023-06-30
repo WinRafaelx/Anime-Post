@@ -16,6 +16,7 @@ import Container from "@mui/material/Container";
 import AutoStoriesSharpIcon from "@mui/icons-material/AutoStoriesSharp";
 import AddIcon from "@mui/icons-material/Add";
 import "./Css/Nav.css"
+import { useNavigate } from "react-router-dom";
 
 const pages = ["post", "blogs"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
@@ -23,6 +24,7 @@ const settings = ["Profile", "Account", "Dashboard", "Logout"];
 function Navbar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const navigate = useNavigate();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -39,15 +41,19 @@ function Navbar() {
     setAnchorElUser(null);
   };
 
+  const gotoAdd = () => {
+    navigate("/add");
+  }
+
   return (
     <AppBar
-      position="static"
-      sx={{ backgroundColor: "#242427", color: "#FFFFFF" }}
+      position="fixed"
+      sx={{ backgroundColor: "#242427", color: "#FFFFFF", opacity: ".9" }}
     >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <AutoStoriesSharpIcon
-            sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
+            sx={{ display: { xs: "none", md: "flex" }, mr: 1, ml: 2 }}
           />
           <Typography
             variant="h6"
@@ -67,6 +73,7 @@ function Navbar() {
             AnimeBlog
           </Typography>
 
+          {/* Phone Responsive */}
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
@@ -124,23 +131,28 @@ function Navbar() {
           >
             AnimeBlog
           </Typography>
+
+          {/* Desktop */}
           <IconButton
             aria-label="addicon"
             sx={{
               flexGrow: 0,
               display: { xs: "none", md: "flex" },
-              color: "#FFFFFF",
+              color: "inherit",
+              backgroundColor: "#313135",
             }}
             className="MyCustomButton"
+            onClick={gotoAdd}
           >
             <AddIcon />
           </IconButton>
-          <Box sx={{ display: { xs: "none", md: "flex" }, flexGrow: 1 }}></Box>
 
+          {/* Login Part */}
+          <Box sx={{ display: { xs: "none", md: "flex" }, flexGrow: 1 }}></Box>
           <Typography
             variant="h6"
             sx={{
-              mr: 2,
+              mr: 3,
               flexGrow: 0,
               display: { xs: "none", md: "flex" },
               fontFamily: "monospace",
@@ -154,7 +166,7 @@ function Navbar() {
 
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, mr: 2}}>
                 <Avatar src="https://i.pinimg.com/564x/a6/0c/b0/a60cb07bbaaaf838c9cf1c77ff88871a.jpg" />
               </IconButton>
             </Tooltip>

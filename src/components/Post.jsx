@@ -1,18 +1,29 @@
 import React, { useEffect } from "react";
 import { db } from "../firebase/firebase.js";
-import { collection, getDocs, query } from "firebase/firestore";
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
+import {
+  Grid,
+  Card,
+  CardActions,
+  CardContent,
+  CardMedia,
+  Button,
+  Typography,
+} from "@mui/material";
 
 function Post() {
   const [post, setPost] = React.useState([]);
 
   const fetchPosts = async () => {
-    await getDocs(query(collection(db, "posts"))).then((querySnapshot) => {
-      const data = querySnapshot.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-      }));
-      setPost(data);
-    });
+    await getDocs(query(collection(db, "posts"), orderBy("timestamp"))).then(
+      (querySnapshot) => {
+        const data = querySnapshot.docs.toReversed().map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        }));
+        setPost(data);
+      }
+    );
   };
 
   useEffect(() => {
@@ -26,22 +37,35 @@ function Post() {
     }
     return stars;
   };
-  
 
   console.log(post);
 
   return (
-    <div>
+    <Grid container spacing={3} direction="row" justifyContent="center" sx={{pt: 10}}>
       {post.map((item) => (
-        <div sx={{backgroundColor: "#3B3A3C"}}>
-          <h1>{item.title}</h1>
-          <h4>{item.description}</h4>
-          <img src={item.image} alt="" height={300}/> <br />
-          <span>{rateStar(item.rate)}</span>
-          <h3>{item.detail}</h3>
-        </div>
+        <Grid item xs={11} md={3.9}>
+          <Card sx={{backgroundColor: "#242427", color: "#FFFFFF"}}>
+            <CardMedia
+              sx={{ height: 300 }}
+              image={item.image}
+              title="green iguana"
+            />
+            <CardContent>
+              <Typography gutterBottom variant="h5" component="div">
+              {item.title}
+              </Typography>
+              <Typography variant="body2" color="white">
+              {item.detail}
+              </Typography>
+              <Typography sx={{color: "gold"}}>{rateStar(item.rate)}</Typography>
+            </CardContent>
+            <CardActions>
+              <Button size="small" sx={{color: "#E38969"}}>More Detail</Button>
+            </CardActions>
+          </Card>
+        </Grid>
       ))}
-    </div>
+    </Grid>
   );
 }
 
