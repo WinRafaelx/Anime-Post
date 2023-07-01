@@ -38,8 +38,6 @@ function Post() {
     return stars;
   };
 
-  console.log(post);
-
   return (
     <Grid container spacing={3} direction="row" justifyContent="center" sx={{pt: 10}}>
       {post.map((item) => (
@@ -55,7 +53,7 @@ function Post() {
               {item.title}
               </Typography>
               <Typography variant="body2" color="white">
-              {item.detail}
+              {item.description}
               </Typography>
               <Typography sx={{color: "gold"}}>{rateStar(item.rate)}</Typography>
             </CardContent>

@@ -18,7 +18,7 @@ import AddIcon from "@mui/icons-material/Add";
 import "./Css/Nav.css"
 import { useNavigate } from "react-router-dom";
 
-const pages = ["post", "blogs"];
+const pages = ["Add"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 function Navbar() {
@@ -45,6 +45,10 @@ function Navbar() {
     navigate("/add");
   }
 
+  const gotoHome = () => {
+    navigate("/");
+  } 
+
   return (
     <AppBar
       position="fixed"
@@ -53,13 +57,14 @@ function Navbar() {
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <AutoStoriesSharpIcon
-            sx={{ display: { xs: "none", md: "flex" }, mr: 1, ml: 2 }}
+            sx={{ display: { xs: "none", md: "flex" }, mr: 1, ml: 2, cursor: 'pointer' }}
+            onClick={gotoHome}
           />
           <Typography
             variant="h6"
             noWrap
             component="a"
-            href="/"
+            onClick={gotoHome}
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
@@ -68,6 +73,7 @@ function Navbar() {
               letterSpacing: ".3rem",
               color: "inherit",
               textDecoration: "none",
+              cursor: 'pointer'
             }}
           >
             AnimeBlog
@@ -104,7 +110,7 @@ function Navbar() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                <MenuItem key={page} onClick={gotoAdd}>
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
               ))}
@@ -112,12 +118,13 @@ function Navbar() {
           </Box>
           <AutoStoriesSharpIcon
             sx={{ display: { xs: "flex", md: "none" }, mr: 1 }}
+            onClick={gotoHome}
           />
           <Typography
             variant="h5"
             noWrap
             component="a"
-            href=""
+            onClick={gotoHome}
             sx={{
               mr: 2,
               display: { xs: "flex", md: "none" },

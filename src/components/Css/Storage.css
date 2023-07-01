@@ -1,0 +1,9 @@
+.Description::placeholder {
+  font-weight: bold;
+  font-size: 23px;
+  letter-spacing: 0.1em;
+}
+
+::placeholder {
+  letter-spacing: 0.2em;
+}
