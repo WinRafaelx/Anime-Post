@@ -3,25 +3,50 @@ import { db, storage } from "../firebase/firebase.js";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 
-import { Container, TextField } from "@mui/material";
+import {
+  Container,
+  TextField,
+  Box,
+  Rating,
+  Typography,
+  Stack,
+  Button,
+} from "@mui/material";
+import StarIcon from "@mui/icons-material/Star";
+import SendIcon from "@mui/icons-material/Send";
+import { TextareaAutosize } from "@mui/base";
 import Navbar from "./Navbar.jsx";
-import { TextareaAutosize } from '@mui/base';
-import './Css/Storage.css'
+import "./Css/Storage.css";
 
 function Storage() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [detail, setDetail] = useState("");
-  const [rate, setRate] = useState(0);
   const [file, setFile] = useState();
   const [percent, setPercent] = useState(0);
+  const [value, setValue] = React.useState(5);
+  const [hover, setHover] = React.useState(5);
+  const [labelColor, setLabelColor] = useState("#FFC300");
 
   const clearValues = () => {
     setTitle("");
     setDescription("");
     setDetail("");
-    setRate(0);
+    setValue(2.5);
     setFile(null);
+  };
+
+  const labels = {
+    1: "Useless",
+    2: "Useless+",
+    3: "Poor",
+    4: "Poor+",
+    5: "Ok",
+    6: "Ok+",
+    7: "Good",
+    8: "Good+",
+    9: "Excellent",
+    10: "Excellent+",
   };
 
   const handleUpload = () => {
@@ -46,7 +71,7 @@ function Storage() {
             title: title,
             description: description,
             detail: detail,
-            rate: rate,
+            rate: value,
             image: url,
             timestamp: serverTimestamp(),
           });
@@ -55,6 +80,16 @@ function Storage() {
         });
       }
     );
+  };
+
+  const getLabelText = (value) => {
+    return `${value} Star${value !== 1 ? "s" : ""}, ${labels[value]}`;
+  };
+
+  const changeLabelColor = (value) => {
+    if (value >= 8) setLabelColor("#03C04A");
+    else if (value >= 4) setLabelColor("#FFC300");
+    else setLabelColor("#C70039");
   };
 
   return (
@@ -75,39 +110,109 @@ function Storage() {
           fullWidth
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          sx={{input: { color: 'white', fontSize: 23 }, mb: 2.5}}
+          sx={{ input: { color: "white", fontSize: 23 }, mb: 2.5 }}
           inputProps={{ maxLength: 128 }}
           className="Title"
         />
-        <TextareaAutosize 
+        <TextareaAutosize
           placeholder="Description"
           className="Description"
           value={description}
-          style={{color: "#FFFFFF", backgroundColor: "#242427", width: "100%", minHeight: "80px", padding: "16px", fontSize: "20px", borderRadius: "5px", border: "none", outline: "none", resize:"none", marginBottom: "15px"}}
+          style={{
+            color: "#FFFFFF",
+            backgroundColor: "#242427",
+            width: "100%",
+            minHeight: "80px",
+            padding: "16px",
+            fontSize: "20px",
+            borderRadius: "5px",
+            border: "none",
+            outline: "none",
+            resize: "none",
+            marginBottom: "15px",
+          }}
           onChange={(e) => setDescription(e.target.value)}
           maxlength="256"
         />
-        <TextareaAutosize 
+        <TextareaAutosize
           placeholder="Detail"
           className="Description"
           value={detail}
-          style={{color: "#FFFFFF", backgroundColor: "#242427", width: "100%", minHeight: "380px", padding: "16px", fontSize: "20px", borderRadius: "5px", border: "none", outline: "none", resize:"none", marginBottom: "20px"}}
+          style={{
+            color: "#FFFFFF",
+            backgroundColor: "#242427",
+            width: "100%",
+            minHeight: "380px",
+            padding: "16px",
+            fontSize: "20px",
+            borderRadius: "5px",
+            border: "none",
+            outline: "none",
+            resize: "none",
+            marginBottom: "20px",
+          }}
           onChange={(e) => setDetail(e.target.value)}
-          maxlength="256"
         />
+        <Box
+          sx={{
+            maxWidth: 400,
+            display: "flex",
+            alignItems: "center",
+            mx: "auto",
+            display: "flex",
+            p: 1,
+            flexDirection: { xs: "column", sm: "row" },
+          }}
+        >
+          <Rating
+            name="hover-feedback"
+            value={value}
+            precision={1}
+            max={10}
+            size="large"
+            getLabelText={getLabelText}
+            onChange={(event, newValue) => {
+              setValue(newValue);
+              changeLabelColor(newValue);
+            }}
+            onChangeActive={(event, newHover) => {
+              setHover(newHover);
+            }}
+            emptyIcon={
+              <StarIcon
+                style={{ opacity: 0.55, color: "grey" }}
+                fontSize="inherit"
+              />
+            }
+          />
+          {value !== null && (
+            <Typography sx={{ ml: 2, color: labelColor }} variant="h5">
+              {labels[hover !== -1 ? hover : value]}
+            </Typography>
+          )}
+        </Box>
+
         <br />
         <input
-          type="range"
-          min={0}
-          max={5}
-          value={rate}
-          onChange={(e) => setRate(e.target.value)}
-          placeholder="Rating"
+          style={{ width: "100%", backgroundColor: "#242427" }}
+          type="file"
+          onChange={(e) => setFile(e.target.files[0])}
         />
-        <br />
-        <input type="file" onChange={(e) => setFile(e.target.files[0])} />
-        <br />
-        <button onClick={handleUpload}>Submit</button>
+        <Stack
+          direction="row"
+          spacing={2}
+          sx={{ py: 3, display: "flex", justifyContent: "right" }}
+        >
+          <Button color="primary" disabled >Save Draft</Button>
+          <Button
+            variant="contained"
+            color="success"
+            endIcon={<SendIcon />}
+            onClick={handleUpload}
+          >
+            Post
+          </Button>
+        </Stack>
       </Container>
     </div>
   );

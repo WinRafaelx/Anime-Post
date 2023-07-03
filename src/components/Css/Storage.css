@@ -7,3 +7,29 @@
 ::placeholder {
   letter-spacing: 0.2em;
 }
+
+input[type=file] {
+  max-width: 100%;
+  color: #444;
+  padding: 10px;
+  background: #fff;
+  border-radius: 5px;
+  border: 1px solid #242427;
+  font-size: 20px;
+}
+
+input[type=file]::file-selector-button {
+  margin-right: 20px;
+  border: none;
+  background: #ED6C02;
+  padding: 10px 30px;
+  border-radius: 5px;
+  color: #FFFFFF;
+  cursor: pointer;
+  transition: background .2s ease-in-out;
+  font-size: 18px;
+}
+
+input[type=file]::file-selector-button:hover {
+  background: #B25102;
+}
