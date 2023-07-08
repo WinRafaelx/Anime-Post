@@ -15,16 +15,17 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import AutoStoriesSharpIcon from "@mui/icons-material/AutoStoriesSharp";
 import AddIcon from "@mui/icons-material/Add";
-import "./Css/Nav.css"
+import "./Css/Nav.css";
 import { useNavigate } from "react-router-dom";
+import { useUserAuth } from "../context/AuthContext.jsx";
 
 const pages = ["Add"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 function Navbar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const navigate = useNavigate();
+  const { user, logOut } = useUserAuth();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -43,21 +44,36 @@ function Navbar() {
 
   const gotoAdd = () => {
     navigate("/add");
-  }
+  };
 
   const gotoHome = () => {
     navigate("/");
-  } 
+  };
+
+  const handleLogout = async () => {
+    try {
+      await logOut();
+      navigate("/");
+    } catch (err) {
+      console.log(err.massage);
+    }
+    setAnchorElUser(null);
+  };
 
   return (
     <AppBar
       position="fixed"
-      sx={{ backgroundColor: "#242427", color: "#FFFFFF"}}
+      sx={{ backgroundColor: "#242427", color: "#FFFFFF" }}
     >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <AutoStoriesSharpIcon
-            sx={{ display: { xs: "none", md: "flex" }, mr: 1, ml: 2, cursor: 'pointer' }}
+            sx={{
+              display: { xs: "none", md: "flex" },
+              mr: 1,
+              ml: 2,
+              cursor: "pointer",
+            }}
             onClick={gotoHome}
           />
           <Typography
@@ -73,7 +89,7 @@ function Navbar() {
               letterSpacing: ".3rem",
               color: "inherit",
               textDecoration: "none",
-              cursor: 'pointer'
+              cursor: "pointer",
             }}
           >
             AnimeBlog
@@ -155,51 +171,84 @@ function Navbar() {
           </IconButton>
 
           {/* Login Part */}
-          <Box sx={{ display: { xs: "none", md: "flex" }, flexGrow: 1 }}></Box>
-          <Typography
-            variant="h6"
-            sx={{
-              mr: 3,
-              flexGrow: 0,
-              display: { xs: "none", md: "flex" },
-              fontFamily: "monospace",
-              align: "left",
-              color: "inherit",
-              textDecoration: "none",
-            }}
-          >
-            Rafaelx
-          </Typography>
-
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, mr: 2}}>
-                <Avatar src="https://i.pinimg.com/564x/a6/0c/b0/a60cb07bbaaaf838c9cf1c77ff88871a.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
+          {user ? (
+            <>
+              <Box
+                sx={{ display: { xs: "none", md: "flex" }, flexGrow: 1 }}
+              ></Box>
+              <Typography
+                variant="h6"
+                sx={{
+                  mr: 3,
+                  flexGrow: 0,
+                  display: { xs: "none", md: "flex" },
+                  fontFamily: "monospace",
+                  align: "left",
+                  color: "inherit",
+                  textDecoration: "none",
+                }}
+              >
+                {user.name}
+              </Typography>
+              <Box sx={{ flexGrow: 0 }}>
+                <Tooltip title="Open settings">
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, mr: 2 }}>
+                    <Avatar src="https://i.pinimg.com/564x/a6/0c/b0/a60cb07bbaaaf838c9cf1c77ff88871a.jpg" />
+                  </IconButton>
+                </Tooltip>
+                <Menu
+                  sx={{ mt: "45px" }}
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
+                >
+                  <MenuItem key={"profile"} onClick={handleLogout}>
+                    <Typography textAlign="center">Profile</Typography>
+                  </MenuItem>
+                  <MenuItem key={"logout"} onClick={handleLogout}>
+                    <Typography textAlign="center">Log out</Typography>
+                  </MenuItem>
+                </Menu>
+              </Box>
+            </>
+          ) : (
+            <>
+              <Box
+                sx={{ display: { xs: "none", md: "flex" }, flexGrow: 1 }}
+              ></Box>
+              <Button
+                sx={{
+                  display: { xs: "none", md: "flex" },
+                  flexGrow: 0,
+                  mr: 2,
+                }}
+                variant="outlined"
+                color="success"
+                onClick={() => navigate("/register")}
+                size="medium"
+              >
+                Register
+              </Button>
+              <Button
+                sx={{ display: { xs: "none", md: "flex" }, flexGrow: 0 }}
+                variant="contained"
+                size="medium"
+                onClick={() => navigate("/login")}
+              >
+                Log In
+              </Button>
+            </>
+          )}
         </Toolbar>
       </Container>
     </AppBar>
