@@ -41,7 +41,7 @@ function Post() {
   return (
     <Grid container spacing={3} direction="row" justifyContent="center" sx={{pt: 10}}>
       {post.map((item) => (
-        <Grid item xs={11} md={3.9}>
+        <Grid item xs={11} md={3.9} key={item.id}>
           <Card sx={{backgroundColor: "#242427", color: "#FFFFFF"}}>
             <CardMedia
               sx={{ height: 300 }}

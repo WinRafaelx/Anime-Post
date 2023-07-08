@@ -16,6 +16,7 @@ import StarIcon from "@mui/icons-material/Star";
 import SendIcon from "@mui/icons-material/Send";
 import { TextareaAutosize } from "@mui/base";
 import Navbar from "./Navbar.jsx";
+import { useNavigate } from "react-router-dom";
 import "./Css/Storage.css";
 
 function Storage() {
@@ -27,6 +28,7 @@ function Storage() {
   const [value, setValue] = React.useState(5);
   const [hover, setHover] = React.useState(5);
   const [labelColor, setLabelColor] = useState("#FFC300");
+  const navigate = useNavigate();
 
   const clearValues = () => {
     setTitle("");
@@ -77,6 +79,7 @@ function Storage() {
           });
           console.log("File available at", url);
           clearValues();
+          navigate("/");
         });
       }
     );
@@ -159,7 +162,6 @@ function Storage() {
             display: "flex",
             alignItems: "center",
             mx: "auto",
-            display: "flex",
             p: 1,
             flexDirection: { xs: "column", sm: "row" },
           }}

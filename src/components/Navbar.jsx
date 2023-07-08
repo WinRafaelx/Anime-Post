@@ -177,9 +177,9 @@ function Navbar() {
                 sx={{ display: { xs: "none", md: "flex" }, flexGrow: 1 }}
               ></Box>
               <Typography
-                variant="h6"
+                variant="h5"
                 sx={{
-                  mr: 3,
+                  mr: 2,
                   flexGrow: 0,
                   display: { xs: "none", md: "flex" },
                   fontFamily: "monospace",
@@ -188,12 +188,12 @@ function Navbar() {
                   textDecoration: "none",
                 }}
               >
-                {user.name}
+                {user.displayName}
               </Typography>
-              <Box sx={{ flexGrow: 0 }}>
+              <Box sx={{ flexGrow: 0, p:1 }}>
                 <Tooltip title="Open settings">
-                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, mr: 2 }}>
-                    <Avatar src="https://i.pinimg.com/564x/a6/0c/b0/a60cb07bbaaaf838c9cf1c77ff88871a.jpg" />
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, mr: 1 }}>
+                    <Avatar src={user.photoURL} sx={{height:"50px", width:"50px"}}/>
                   </IconButton>
                 </Tooltip>
                 <Menu
@@ -233,7 +233,7 @@ function Navbar() {
                   mr: 2,
                 }}
                 variant="outlined"
-                color="success"
+                color="error"
                 onClick={() => navigate("/register")}
                 size="medium"
               >
@@ -244,6 +244,7 @@ function Navbar() {
                 variant="contained"
                 size="medium"
                 onClick={() => navigate("/login")}
+                color="warning"
               >
                 Log In
               </Button>
