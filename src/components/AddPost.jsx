@@ -25,8 +25,8 @@ function AddPost() {
   const [detail, setDetail] = useState("");
   const [file, setFile] = useState();
   const [percent, setPercent] = useState(0);
-  const [value, setValue] = React.useState(5);
-  const [hover, setHover] = React.useState(5);
+  const [value, setValue] = React.useState(0);
+  const [hover, setHover] = React.useState(0);
   const [labelColor, setLabelColor] = useState("#FFC300");
   const navigate = useNavigate();
   const [error, setError] = useState("");
@@ -52,9 +52,14 @@ function AddPost() {
     10: "Excellent+",
   };
 
+  const checkUpload = (file, title, des, rate) => {
+    if(!file || !title || !des || !rate)  return false;
+    return true;
+  } 
+
   const handleUpload = () => {
-    if (!file) {
-      alert("Please upload a image file");
+    if (checkUpload(file, title, description, value) === false) {
+      alert("Please fill all the fields");
       return;
     }
     const storageRef = ref(storage, `images/${file.name}`);
@@ -102,7 +107,9 @@ function AddPost() {
   };
 
   return (
-    <div
+    <Box
+      component="form"
+      onSubmit={handleUpload}
       style={{
         backgroundColor: "#19181A",
         color: "#FFFFFF",
@@ -230,7 +237,7 @@ function AddPost() {
           </Button>
         </Stack>
       </Container>
-    </div>
+    </Box>
   );
 }
 

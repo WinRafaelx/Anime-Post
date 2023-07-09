@@ -156,7 +156,12 @@ function Navbar() {
           </Typography>
 
           {/* Desktop */}
-          <IconButton
+          
+
+          {/* Login Part */}
+          {user ? (
+            <>
+            <IconButton
             aria-label="addicon"
             sx={{
               flexGrow: 0,
@@ -169,10 +174,6 @@ function Navbar() {
           >
             <AddIcon />
           </IconButton>
-
-          {/* Login Part */}
-          {user ? (
-            <>
               <Box
                 sx={{ display: { xs: "none", md: "flex" }, flexGrow: 1 }}
               ></Box>
@@ -237,7 +238,7 @@ function Navbar() {
                 onClick={() => navigate("/register")}
                 size="medium"
               >
-                Register
+                Sign Up
               </Button>
               <Button
                 sx={{ display: { xs: "none", md: "flex" }, flexGrow: 0 }}
@@ -246,7 +247,7 @@ function Navbar() {
                 onClick={() => navigate("/login")}
                 color="warning"
               >
-                Log In
+                Sign In
               </Button>
             </>
           )}

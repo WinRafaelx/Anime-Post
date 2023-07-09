@@ -56,7 +56,7 @@ function Login() {
           component="form"
           onSubmit={handleSubmit}
           noValidate
-          sx={{ mt: 1, mx: 2, maxWidth: "450px" }}
+          sx={{ mt: 1, mx: 2}}
         >
           <TextField
             margin="normal"
@@ -128,7 +128,7 @@ function Login() {
                 sx={{ color: "#EC6802", cursor: "pointer" }}
                 underline="none"
               >
-                {"Don't have an account? Sign Up"}
+                {"Already have an account? Sign In"}
               </Link>
             </Grid>
           </Grid>

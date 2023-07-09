@@ -1,7 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { auth } from "../firebase/firebase.js";
+import { auth, storage } from "../firebase/firebase.js";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import {
   TextField,
@@ -14,7 +15,7 @@ import {
 } from "@mui/material";
 
 import Navbar from "./Navbar";
-import './Css/Storage.css'
+import "./Css/Register.css";
 
 function Register() {
   const navigate = useNavigate();
@@ -24,50 +25,42 @@ function Register() {
   const [photoURL, setPhotoURL] = React.useState("");
   const [error, setError] = React.useState("");
 
-
-  console.log(photoURL)
+  console.log(displayName)
 
   const onSubmit = async (e) => {
+    let URL;
     e.preventDefault();
     setError("");
-    await createUserWithEmailAndPassword(auth, email, password)
+    if(!photoURL) {
+      setError("          Please upload a profile picture !")
+      return;
+    }
+    const storageRef = ref(storage, `profiles/${photoURL.name}`);
+    uploadBytes(storageRef, photoURL).then((snapshot) => {
+      console.log("Uploaded a blob or file!", snapshot);
+    }).then(() => {getDownloadURL(storageRef).then((url) => {
+      URL = url;
+    })});
+    try {
+      await createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-        console.log(photoURL);
         updateProfile(user, {
           displayName: displayName,
-          photoURL: photoURL,
+          photoURL: URL,
         });
         console.log(user);
-        navigate("/");
       })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        setError(errorMessage);
-        console.log(errorCode, errorMessage);
-      });
+      navigate("/");
+    } catch (err) {
+      console.log(err);
+      setError(err.message);
+    }
   };
 
   return (
     <>
       <Navbar />
-      {/* <div style={{marginTop: "80px"}}>
-        <span>Profile Image (Image Address/ URL)</span>
-        <input type="text" value={photoURL} onChange={e => setPhotoURL(e.target.value)} />
-        <br />
-        <span>Email</span>
-        <input type="text" value={email} onChange={e => setEmail(e.target.value)} />
-        <br />
-        <span>Name</span>
-        <input type="text" value={displayName} onChange={e => setDisplayName(e.target.value)} />
-        <br />
-        <span>Password</span>
-        <input type="password" value={password} onChange={e => setPassword(e.target.value)} />
-        <br />
-        <button onClick={onSubmit}>Send</button>
-        <button onClick={() => setPhotoURL("https://fakeimg.pl/150x150?text=User")}>Meow</button>
-      </div> */}
       <Box
         style={{
           backgroundColor: "#19181A",
@@ -89,30 +82,43 @@ function Register() {
           component="form"
           onSubmit={onSubmit}
           noValidate
-          sx={{ mt: 1, mx: 2, maxWidth: "450px" }}
+          sx={{ mt: 1, mx: 2 }}
         >
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            id="displayName"
-            label="Display Name"
-            name="displayName"
-            autoComplete="email"
-            autoFocus
-            color="warning"
-            sx={{
-              color: "#FFFFFF",
-              backgroundColor: "#242427",
-              "& input": {
-                color: "#FFFFFF",
-              },
-              "& .MuiFormLabel-root": {
-                color: "#757575",
-              },
-            }}
-            onChange={(e) => setDisplayName(e.target.value)}
-          />
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                autoComplete="given-name"
+                name="displayName"
+                required
+                fullWidth
+                id="displayName"
+                label="Display Name"
+                autoFocus
+                color="warning"
+                sx={{
+                  color: "#FFFFFF",
+                  backgroundColor: "#242427",
+                  "& input": {
+                    color: "#FFFFFF",
+                  },
+                  "& .MuiFormLabel-root": {
+                    color: "#757575",
+                  },
+                }}
+                onChange={(e) => setDisplayName(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <input
+                required
+                style={{ backgroundColor: "#242427", width: "100%" }}
+                type="file"
+                id="img"
+                onChange={(e) => setPhotoURL(e.target.files[0])}
+              />
+            </Grid>
+          </Grid>
+
           <TextField
             margin="normal"
             required
