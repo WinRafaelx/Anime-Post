@@ -32,8 +32,6 @@ function Login() {
     }
   };
 
-  console.log(email, password);
-
   return (
     <>
       <Navbar />
@@ -58,7 +56,7 @@ function Login() {
           component="form"
           onSubmit={handleSubmit}
           noValidate
-          sx={{ mt: 1, mx: 2 }}
+          sx={{ mt: 1, mx: 2, maxWidth: "450px" }}
         >
           <TextField
             margin="normal"

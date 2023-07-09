@@ -19,7 +19,7 @@ import Navbar from "./Navbar.jsx";
 import { useNavigate } from "react-router-dom";
 import "./Css/Storage.css";
 
-function Storage() {
+function AddPost() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [detail, setDetail] = useState("");
@@ -29,6 +29,7 @@ function Storage() {
   const [hover, setHover] = React.useState(5);
   const [labelColor, setLabelColor] = useState("#FFC300");
   const navigate = useNavigate();
+  const [error, setError] = useState("");
 
   const clearValues = () => {
     setTitle("");
@@ -59,6 +60,8 @@ function Storage() {
     const storageRef = ref(storage, `images/${file.name}`);
     const uploadTask = uploadBytesResumable(storageRef, file);
 
+    setError("");
+
     uploadTask.on(
       "state_changed",
       (snapshot) => {
@@ -66,7 +69,10 @@ function Storage() {
           Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         setPercent(progress);
       },
-      (err) => console.log(err),
+      (err) => {
+        console.log(err)
+        setError(err.message);
+      },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
           addDoc(collection(db, "posts"), {
@@ -106,7 +112,8 @@ function Storage() {
       <Navbar />
       <Container sx={{ mx: "auto", pt: 10 }}>
         <TextField
-          placeholder="Title"
+          required
+          placeholder="Title*"
           variant="standard"
           color="warning"
           focused
@@ -118,7 +125,8 @@ function Storage() {
           className="Title"
         />
         <TextareaAutosize
-          placeholder="Description"
+          required
+          placeholder="Description*"
           className="Description"
           value={description}
           style={{
@@ -138,7 +146,8 @@ function Storage() {
           maxlength="256"
         />
         <TextareaAutosize
-          placeholder="Detail"
+          required
+          placeholder="Detail*"
           className="Description"
           value={detail}
           style={{
@@ -168,6 +177,7 @@ function Storage() {
         >
           <Rating
             name="hover-feedback"
+            required
             value={value}
             precision={1}
             max={10}
@@ -196,10 +206,14 @@ function Storage() {
 
         <br />
         <input
+          required
           style={{ width: "100%", backgroundColor: "#242427" }}
           type="file"
           onChange={(e) => setFile(e.target.files[0])}
         />
+        <Typography sx={{ color: "red" }} variant="inherit">
+            {error.slice(10)}
+          </Typography>
         <Stack
           direction="row"
           spacing={2}
@@ -220,4 +234,4 @@ function Storage() {
   );
 }
 
-export default Storage;
+export default AddPost;

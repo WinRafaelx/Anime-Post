@@ -4,7 +4,7 @@ import { AuthContextProvider } from "./context/AuthContext.jsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import App from "./App.jsx";
-import Storage from "./components/Storage.jsx";
+import AddPost from "./components/AddPost.jsx";
 import Register from "./components/Register.jsx";
 import Login from "./components/Login.jsx";
 import "./style.css";
@@ -16,7 +16,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/add",
-    element: <Storage />,
+    element: <AddPost />,
   },
   {
     path: "/register",
