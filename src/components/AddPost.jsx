@@ -33,14 +33,6 @@ function AddPost() {
   const [error, setError] = useState("");
   const { user } = useUserAuth();
 
-  const clearValues = () => {
-    setTitle("");
-    setDescription("");
-    setDetail("");
-    setValue(2.5);
-    setFile(null);
-  };
-
   const labels = {
     1: "Useless",
     2: "Useless+",
@@ -92,8 +84,6 @@ function AddPost() {
             author: user.displayName,
             authorProfile: user.photoURL,
           });
-          console.log("File available at", url);
-          clearValues();
           navigate("/");
         });
       }
