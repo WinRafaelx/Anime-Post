@@ -128,7 +128,7 @@ function Login() {
                 sx={{ color: "#EC6802", cursor: "pointer" }}
                 underline="none"
               >
-                {"Already have an account? Sign In"}
+                {"Don't have an account? Sign Up"}
               </Link>
             </Grid>
           </Grid>

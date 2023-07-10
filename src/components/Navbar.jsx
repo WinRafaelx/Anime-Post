@@ -27,6 +27,8 @@ function Navbar() {
   const navigate = useNavigate();
   const { user, logOut } = useUserAuth();
 
+  console.log(user)
+
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -213,9 +215,9 @@ function Navbar() {
                   open={Boolean(anchorElUser)}
                   onClose={handleCloseUserMenu}
                 >
-                  <MenuItem key={"profile"} onClick={handleLogout}>
+                  {/* <MenuItem key={"profile"} onClick={handleLogout}>
                     <Typography textAlign="center">Profile</Typography>
-                  </MenuItem>
+                  </MenuItem> */}
                   <MenuItem key={"logout"} onClick={handleLogout}>
                     <Typography textAlign="center">Log out</Typography>
                   </MenuItem>

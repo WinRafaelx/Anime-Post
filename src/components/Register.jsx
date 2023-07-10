@@ -25,8 +25,6 @@ function Register() {
   const [photoURL, setPhotoURL] = React.useState("");
   const [error, setError] = React.useState("");
 
-  console.log(displayName)
-
   const onSubmit = async (e) => {
     let URL;
     e.preventDefault();
@@ -164,7 +162,7 @@ function Register() {
             onChange={(e) => setPassword(e.target.value)}
           />
           <Typography sx={{ color: "red" }} variant="inherit">
-            {error.slice(10)}
+            {error}
           </Typography>
           <Button
             type="submit"
@@ -189,7 +187,7 @@ function Register() {
                 sx={{ color: "#EC6802", cursor: "pointer" }}
                 underline="none"
               >
-                {"Don't have an account? Sign Up"}
+                {"Already have an account? Sign In"}
               </Link>
             </Grid>
           </Grid>

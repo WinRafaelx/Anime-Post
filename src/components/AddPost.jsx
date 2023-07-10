@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { db, storage } from "../firebase/firebase.js";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { useUserAuth } from "../context/AuthContext.jsx";
 
 import {
   Container,
@@ -30,6 +31,7 @@ function AddPost() {
   const [labelColor, setLabelColor] = useState("#FFC300");
   const navigate = useNavigate();
   const [error, setError] = useState("");
+  const { user } = useUserAuth();
 
   const clearValues = () => {
     setTitle("");
@@ -87,6 +89,8 @@ function AddPost() {
             rate: value,
             image: url,
             timestamp: serverTimestamp(),
+            author: user.displayName,
+            authorProfile: user.photoURL,
           });
           console.log("File available at", url);
           clearValues();
