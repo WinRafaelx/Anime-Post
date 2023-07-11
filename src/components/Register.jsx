@@ -50,6 +50,7 @@ function Register() {
         console.log(user);
       })
       navigate("/");
+      window.location.reload(true)
     } catch (err) {
       console.log(err);
       setError(err.message);
