@@ -3,6 +3,7 @@ import Comment from "./Comment.jsx";
 import AmountComments from "./AmountComments.jsx";
 import { useParams, useLocation } from "react-router-dom";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar.jsx";
 import {
   Grid,
@@ -61,6 +62,7 @@ function getTimeOfPost(postTimestamp) {
 function FullPost() {
   const [commentId, setCommentId] = useState("");
   const [openComment, setOpenComment] = useState(false);
+  const navigate = useNavigate();
   let item = useLocation().state.post;
 
   const rateStar = (rate) => {
@@ -102,23 +104,26 @@ function FullPost() {
             </div>
 
             <CardContent>
-              <Typography gutterBottom variant="h5" component="div">
+              <Typography variant="h4">
                 {item.title}
-              </Typography>
-              <Typography variant="body2" color="white">
-                {item.description}
               </Typography>
               <Typography sx={{ color: "gold" }} variant="h5">
                 {rateStar(item.rate)}
               </Typography>
+              <Typography variant="h5" color="white" sx={{mt:2}}>
+              <strong>Description:</strong> <br /> {item.description}
+              </Typography>
+              <Typography variant="h5" color="white" sx={{mt:2}}>
+              <strong>Detail:</strong> <br /> {item.detail}
+              </Typography>
             </CardContent>
             <CardActions>
-              <IconButton aria-label="add to favorites">
+              {/* <IconButton aria-label="add to favorites">
                 <Typography variant="h6" sx={{ color: "#FFFFFF", mr: 1 }}>
                   12
                 </Typography>
                 <FavoriteIcon sx={{ color: "#FFFFFF" }} />
-              </IconButton>
+              </IconButton> */}
               <IconButton
                 aria-label="add comments"
                 onClick={() => {
@@ -133,6 +138,9 @@ function FullPost() {
                 <AmountComments postId={item.id} />
               </IconButton>
               <Box sx={{ flexGrow: 1 }}></Box>
+              <Button onClick={()=> navigate('/')}>
+                <Typography variant="subtitle1" sx={{color: "orange"}}>Home Page</Typography>
+              </Button>
             </CardActions>
             <Comment
               postId={item.id}

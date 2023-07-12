@@ -30,7 +30,7 @@ function Register() {
     e.preventDefault();
     setError("");
     if(!photoURL) {
-      setError("          Please upload a profile picture !")
+      setError("Please upload a profile picture !")
       return;
     }
     const storageRef = ref(storage, `profiles/${photoURL.name}`);

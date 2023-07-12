@@ -27,6 +27,8 @@ function Navbar() {
   const navigate = useNavigate();
   const { user, logOut } = useUserAuth();
 
+  console.log(user)
+
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };

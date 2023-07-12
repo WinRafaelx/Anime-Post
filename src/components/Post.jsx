@@ -123,12 +123,12 @@ function Post() {
               </Typography>
             </CardContent>
             <CardActions>
-              <IconButton aria-label="add to favorites">
+              {/* <IconButton aria-label="add to favorites">
                 <Typography variant="h6" sx={{ color: "#FFFFFF", mr: 1 }}>
                   12
                 </Typography>
                 <FavoriteIcon sx={{ color: "#FFFFFF" }} />
-              </IconButton>
+              </IconButton> */}
               <IconButton
                 aria-label="add comments"
                 onClick={() => {
