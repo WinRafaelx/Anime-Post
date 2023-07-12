@@ -18,8 +18,6 @@ function AmountComments({ postId }) {
     });
   }, []);
 
-  console.log(postComments.length)
-
   return (
     <>
       <Typography variant="h6" sx={{ color: "#FFFFFF", mr: 1 }}>

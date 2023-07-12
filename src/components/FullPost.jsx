@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { db } from "../firebase/firebase.js";
-import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import Comment from "./Comment.jsx";
 import AmountComments from "./AmountComments.jsx";
+import { useParams, useLocation } from "react-router-dom";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import { useNavigate, Link } from 'react-router-dom';
+import Navbar from "./Navbar.jsx";
 import {
   Grid,
   Card,
@@ -20,8 +19,14 @@ import {
 } from "@mui/material";
 
 function getTimeOfPost(postTimestamp) {
+  if (postTimestamp === null) return "Just now";
   const now = Date.now();
-  const diff = now - (postTimestamp && postTimestamp.toDate().getTime());
+  const diff =
+    now -
+    Number(
+      String(postTimestamp.seconds) +
+        String(postTimestamp.nanoseconds).slice(0, 3)
+    );
 
   // Define time units in milliseconds
   const minute = 60 * 1000;
@@ -53,27 +58,10 @@ function getTimeOfPost(postTimestamp) {
   }
 }
 
-function Post() {
-  const [post, setPost] = useState([]);
-  const [openComment, setOpenComment] = useState(false);
+function FullPost() {
   const [commentId, setCommentId] = useState("");
-  const navigate = useNavigate();
-
-  const fetchPosts = async () => {
-    await getDocs(query(collection(db, "posts"), orderBy("timestamp"))).then(
-      (querySnapshot) => {
-        const data = querySnapshot.docs.toReversed().map((doc) => ({
-          ...doc.data(),
-          id: doc.id,
-        }));
-        setPost(data);
-      }
-    );
-  };
-
-  useEffect(() => {
-    fetchPosts();
-  }, []);
+  const [openComment, setOpenComment] = useState(false);
+  let item = useLocation().state.post;
 
   const rateStar = (rate) => {
     let stars = "";
@@ -81,23 +69,26 @@ function Post() {
       stars += "★";
     }
     return stars;
-  }; 
+  };
 
   return (
-    <Grid
-      container
-      direction="row"
-      justifyContent="center"
-      sx={{
-        pt: 10,
-        minHeight: "100vh",
-        backgroundColor: "#19181A",
-        color: "#FFFFFF",
-      }}
-    >
-      {post.map((item) => (
-        <Grid item xs={11} md={3.7} key={item.id} sx={{ m: 2 }}>
-          <Card sx={{ backgroundColor: "#242427", color: "#FFFFFF" }}>
+    <>
+      <Navbar />
+      <Grid
+        container
+        direction="row"
+        justifyContent="center"
+        sx={{
+          pt: 8,
+          minHeight: "100vh",
+          backgroundColor: "#19181A",
+          color: "#FFFFFF",
+        }}
+      >
+        <Grid item xs={12} md={10} key={item.id} sx={{ m: 2 }}>
+          <Card
+            sx={{ backgroundColor: "#242427", color: "#FFFFFF", width: "100%" }}
+          >
             <CardHeader
               avatar={<Avatar src={item.authorProfile}></Avatar>}
               title={item.author}
@@ -106,11 +97,10 @@ function Post() {
                 <Typography>{getTimeOfPost(item.timestamp)}</Typography>
               }
             />
-            <CardMedia
-              sx={{ height: 300 }}
-              image={item.image}
-              title="green iguana"
-            />
+            <div style={{width: "100%", textAlign: "center", margin: "10px auto", backgroundColor: "#010409"}}>
+              <img src={item.image} style={{objectFit: "contain", maxHeight:"700px"}} />
+            </div>
+
             <CardContent>
               <Typography gutterBottom variant="h5" component="div">
                 {item.title}
@@ -132,32 +122,28 @@ function Post() {
               <IconButton
                 aria-label="add comments"
                 onClick={() => {
-                  if(commentId != item.id && openComment) {
-                    setCommentId(item.id)
-                    return ;
+                  if (commentId != item.id && openComment) {
+                    setCommentId(item.id);
+                    return;
                   }
-                  setCommentId(item.id)
-                  setOpenComment(!openComment)
+                  setCommentId(item.id);
+                  setOpenComment(!openComment);
                 }}
               >
                 <AmountComments postId={item.id} />
               </IconButton>
-              <Box
-                sx={{ flexGrow: 1 }}
-              ></Box>
-              <Button size="small" sx={{ color: "#E38969", ml: 1 }}>
-                <Link to={`post/${item.id}`} state={{post: item}}
-                style={{textDecoration: "none"}}>
-                  <Typography variant="subtitle1" sx={{color: "orange"}}>More Detail</Typography>
-                </Link>
-              </Button>
+              <Box sx={{ flexGrow: 1 }}></Box>
             </CardActions>
-            <Comment postId={item.id} openComment={openComment} commentId={commentId}/>
+            <Comment
+              postId={item.id}
+              openComment={openComment}
+              commentId={commentId}
+            />
           </Card>
         </Grid>
-      ))}
-    </Grid>
+      </Grid>
+    </>
   );
 }
 
-export default Post;
+export default FullPost;

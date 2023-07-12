@@ -13,7 +13,7 @@ import { db } from "../firebase/firebase";
 import { useUserAuth } from "../context/AuthContext";
 import { Typography, TextField, Box } from "@mui/material";
 
-function Comment({ postId, openComment }) {
+function Comment({ postId, openComment, commentId }) {
   const [comment, setComment] = useState("");
   const [postComments, setPostComments] = useState([]);
   const [showMore, setShowMore] = useState(false);
@@ -68,7 +68,7 @@ function Comment({ postId, openComment }) {
   return (
     <>
       <div>
-        {postComments.length > 0 && openComment ? (
+        {postComments.length > 0 && openComment && commentId === postId ? (
           <Typography
             style={showMore ? { display: "none" } : { display: "block" }}
             onClick={() => setShowMore(!showMore)}
@@ -79,7 +79,7 @@ function Comment({ postId, openComment }) {
         ) : (
           ""
         )}
-        {showMore && openComment ? (
+        {showMore && openComment && commentId === postId ? (
           <>
             {postComments
               ?.filter((item, idx) => idx < limit)
@@ -117,7 +117,7 @@ function Comment({ postId, openComment }) {
           ""
         )}
       </div>
-      {openComment && user ? (
+      {openComment && user && commentId === postId  ? (
         <div>
           <form onSubmit={handleSubmit}>
             <TextField

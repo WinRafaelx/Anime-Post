@@ -8,6 +8,7 @@ import AddPost from "./components/AddPost.jsx";
 import Register from "./components/Register.jsx";
 import Login from "./components/Login.jsx";
 import "./style.css";
+import FullPost from "./components/FullPost.jsx";
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/post/:id",
+    element: <FullPost />,
   },
 ]);
 
