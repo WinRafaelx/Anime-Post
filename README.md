@@ -1,12 +1,6 @@
 ﻿# Anime-Post
 
--React, MUI
++ Website: https://anime-post.pages.dev/
 
-#Tool
-- Firebase
-  - Database
-  - Storage
-  - Authentication
++ Tools: ReactJS, MaterialUI, Firebase (database, storage, authentication)
 
-##Prototype
-https://anime-post.pages.dev/
