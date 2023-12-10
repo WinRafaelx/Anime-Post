@@ -1,4 +1,4 @@
-﻿# Anime-Post
+﻿# AnimeBlog
 
 + Website: https://anime-post.pages.dev/
 
